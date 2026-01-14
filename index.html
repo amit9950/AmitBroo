@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTE Result Link Generator</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.header {
+    width: 100%;
+    max-width: 800px;
+    background: linear-gradient(to right, #0f3460, #1a1a2e);
+    color: white;
+    padding: 25px 40px;
+    border-radius: 20px 20px 0 0;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    background: linear-gradient(to right, #86a8e7, #91eae4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.developer-tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(134, 168, 231, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.developer-tag .highlight {
+    color: #86a8e7;
+    font-weight: 600;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: #1a1a2e;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, #0f3460, #86a8e7);
+    border-radius: 2px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #0f3460;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+label:before {
+    content: '•';
+    color: #86a8e7;
+    font-size: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s;
+    background-color: #f8fafc;
+    color: #333;
+}
+
+input:focus {
+    outline: none;
+    border-color: #86a8e7;
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(134, 168, 231, 0.15);
+}
+
+.helper-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+    display: block;
+    padding-left: 10px;
+    border-left: 3px solid #e0e0e0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(to right, #0f3460, #1a1a2e);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(15, 52, 96, 0.3);
+}
+
+.submit-btn:hover {
+    background: linear-gradient(to right, #1a1a2e, #0f3460);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(15, 52, 96, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.result-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(to right, #2ecc71, #1abc9c);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.result-btn.active {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+}
+
+.result-btn:hover {
+    background: linear-gradient(to right, #27ae60, #16a085);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+.result-btn:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.icon {
+    font-size: 22px;
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 8px;
+    display: none;
+    padding-left: 10px;
+    border-left: 3px solid #e74c3c;
+}
+
+.error.active {
+    display: block;
+}
+
+.loader {
+    display: none;
+    width: 22px;
+    height: 22px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading .loader {
+    display: inline-block;
+}
+
+.success-message {
+    background: #e8f6ef;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #2ecc71;
+    margin-top: 20px;
+    display: none;
+    align-items: center;
+    gap: 15px;
+    color: #27ae60;
+    font-weight: 500;
+    box-shadow: 0 3px 10px rgba(39, 174, 96, 0.1);
+}
+
+.success-message.active {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+}
+
+.success-message .icon {
+    font-size: 28px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
+    font-size: 14px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer p {
+    margin-bottom: 5px;
+}
+
+.copyright {
+    color: #888;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.developer-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    color: #0f3460;
+    font-weight: 500;
+}
+
+.developer-info .tag {
+    background: linear-gradient(to right, #86a8e7, #91eae4);
+    padding: 6px 15px;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .header {
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding: 25px;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    h2 {
+        font-size: 24px;
+    }
+    
+    .submit-btn, .result-btn {
+        padding: 16px;
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>BTE Result Link Generator</h1>
+    <p>Quickly generate and access your BTE examination results</p>
+    <div class="developer-tag">
+        Developed by <span class="highlight">Amit Kumar</span>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Enter Your Details</h2>
+    
+    <div class="input-group">
+        <label for="enroll">Enrollment Number</label>
+        <input type="text" id="enroll" placeholder="Enter your complete enrollment number">
+        <span class="helper-text">Make sure to enter your enrollment number correctly</span>
+        <div class="error" id="enroll-error">Please enter a valid enrollment number</div>
+    </div>
+    
+    <div class="input-group">
+        <label for="dob">Date of Birth</label>
+        <input type="text" id="dob" placeholder="DD/MM/YYYY">
+        <span class="helper-text">Format: Day/Month/Year (Example: 15/05/2002)</span>
+        <div class="error" id="dob-error">Please enter date in DD/MM/YYYY format</div>
+    </div>
+    
+    <button class="submit-btn" id="submit-btn" onclick="generateLink()">
+        <span>Generate Result Link</span>
+        <span class="icon">🔗</span>
+        <div class="loader"></div>
+    </button>
+    
+    <div class="success-message" id="success-message">
+        <span class="icon">✅</span>
+        <span>Your result link has been generated successfully! Click below to open your result.</span>
+    </div>
+    
+    <button class="result-btn" id="result-btn" onclick="openResult()">
+        <span>Open Result in New Tab</span>
+        <span class="icon">🔍</span>
+    </button>
+    
+    <div class="footer">
+        <p>This tool helps you generate direct links to BTE exam results securely.</p>
+        <div class="developer-info">
+            <span>Developer:</span>
+            <div class="tag">Amit Kumar</div>
+        </div>
+        <div class="copyright">
+            © 2024 BTE Result Generator | All rights reserved
+        </div>
+    </div>
+</div>
+
+<script>
+let generatedLink = "";
+
+function generateLink() {
+    // Get input values
+    let enroll = document.getElementById("enroll").value.trim();
+    let dob = document.getElementById("dob").value.trim();
+    let submitBtn = document.getElementById("submit-btn");
+    let resultBtn = document.getElementById("result-btn");
+    let successMessage = document.getElementById("success-message");
+    
+    // Reset previous errors
+    document.getElementById("enroll-error").classList.remove("active");
+    document.getElementById("dob-error").classList.remove("active");
+    
+    // Validate inputs
+    let isValid = true;
+    
+    if(enroll === "") {
+        document.getElementById("enroll-error").classList.add("active");
+        isValid = false;
+    }
+    
+    // Check DOB format
+    const dobRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if(dob === "" || !dobRegex.test(dob)) {
+        document.getElementById("dob-error").classList.add("active");
+        isValid = false;
+    }
+    
+    if(!isValid) {
+        // Hide result button if validation fails
+        resultBtn.classList.remove("active");
+        successMessage.classList.remove("active");
+        return;
+    }
+    
+    // Show loading state
+    submitBtn.classList.add("loading");
+    submitBtn.disabled = true;
+    
+    // Simulate processing time (1 second)
+    setTimeout(() => {
+        // Base64 encode
+        let encEnroll = btoa(enroll);
+        let encDob = btoa(dob);
+        
+        // URL safe encoding for DOB
+        encDob = encDob.replace(/=/g, "%3D");
+        
+        // Create final link
+        generatedLink = "https://result.bteexam.com/Odd_Semester/main/result.aspx?id=" + encEnroll + "&id2=" + encDob;
+        
+        // Show success message and result button
+        successMessage.classList.add("active");
+        resultBtn.classList.add("active");
+        
+        // Reset button state
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+    }, 1000);
+}
+
+function openResult() {
+    if(generatedLink) {
+        window.open(generatedLink, "_blank");
+    }
+}
+
+// Add some interactivity
+document.getElementById("enroll").addEventListener("focus", function() {
+    this.style.borderColor = "#86a8e7";
+});
+
+document.getElementById("enroll").addEventListener("blur", function() {
+    this.style.borderColor = "#e0e0e0";
+});
+
+document.getElementById("dob").addEventListener("focus", function() {
+    this.style.borderColor = "#86a8e7";
+});
+
+document.getElementById("dob").addEventListener("blur", function() {
+    this.style.borderColor = "#e0e0e0";
+});
+
+// Allow pressing Enter to submit
+document.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        generateLink();
+    }
+});
+
+// Clear result when user edits input
+document.getElementById("enroll").addEventListener("input", function() {
+    document.getElementById("result-btn").classList.remove("active");
+    document.getElementById("success-message").classList.remove("active");
+});
+
+document.getElementById("dob").addEventListener("input", function() {
+    document.getElementById("result-btn").classList.remove("active");
+    document.getElementById("success-message").classList.remove("active");
+});
+</script>
+
+</body>
+</html>
