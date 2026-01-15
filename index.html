@@ -453,7 +453,6 @@ function generateLink() {
 
         let encEnroll = btoa(enroll);
         let encDob = btoa(dob);
-
         encDob = encDob.replace(/=/g,"%3D");
 
         generatedLink =
@@ -463,39 +462,19 @@ function generateLink() {
         successMessage.classList.add("active");
         resultBtn.classList.add("active");
 
-        showIframeResult();   // NEW
-
         submitBtn.classList.remove("loading");
         submitBtn.disabled = false;
 
     },1000);
 }
 
-/* SAME PAGE RESULT */
-function showIframeResult(){
-
-    let oldFrame = document.getElementById("resultFrame");
-    if(oldFrame) oldFrame.remove();
-
-    let iframe = document.createElement("iframe");
-    iframe.id = "resultFrame";
-    iframe.src = generatedLink;
-    iframe.style.width = "100%";
-    iframe.style.height = "700px";
-    iframe.style.border = "1px solid #ccc";
-    iframe.style.marginTop = "20px";
-
-    document.querySelector(".container").appendChild(iframe);
-}
-
 function openResult() {
     if(generatedLink) {
-        window.open(generatedLink, "_blank");
+        window.open(generatedLink, "_blank"); // NEW TAB ONLY
     }
 }
-
-/* existing event listeners unchanged */
 </script>
+
 
 
 </body>
