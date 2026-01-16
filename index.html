@@ -412,7 +412,6 @@ input:focus {
         </div>
     </div>
 </div>
-
 <script>
 let generatedLink = "";
 
@@ -420,9 +419,6 @@ function generateLink() {
 
     let enroll = document.getElementById("enroll").value.trim();
     let dob = document.getElementById("dob").value.trim();
-    let submitBtn = document.getElementById("submit-btn");
-    let resultBtn = document.getElementById("result-btn");
-    let successMessage = document.getElementById("success-message");
     
     document.getElementById("enroll-error").classList.remove("active");
     document.getElementById("dob-error").classList.remove("active");
@@ -440,40 +436,24 @@ function generateLink() {
         isValid = false;
     }
 
-    if(!isValid) {
-        resultBtn.classList.remove("active");
-        successMessage.classList.remove("active");
-        return;
-    }
+    if(!isValid) return;
 
-    submitBtn.classList.add("loading");
-    submitBtn.disabled = true;
+    let encEnroll = btoa(enroll);
+    let encDob = btoa(dob).replace(/=/g,"%3D");
 
-    setTimeout(() => {
+    generatedLink =
+    "https://result.bteexam.com/Odd_Semester/main/result.aspx?id="
+    + encEnroll + "&id2=" + encDob;
 
-        let encEnroll = btoa(enroll);
-        let encDob = btoa(dob);
-        encDob = encDob.replace(/=/g,"%3D");
-
-        generatedLink =
-        "https://test.bteupexam.co.in/Odd_Semester/main/result.aspx?id="
-        + encEnroll + "&id2=" + encDob;
-
-        successMessage.classList.add("active");
-        resultBtn.classList.add("active");
-
-        submitBtn.classList.remove("loading");
-        submitBtn.disabled = false;
-
-    },1000);
+    document.getElementById("success-message").classList.add("active");
+    document.getElementById("result-btn").classList.add("active");
 }
 
 function openResult() {
-    if(generatedLink) {
-        window.open(generatedLink, "_blank"); // NEW TAB ONLY
-    }
+    window.open(generatedLink, "_blank");
 }
 </script>
+
 
 
 
